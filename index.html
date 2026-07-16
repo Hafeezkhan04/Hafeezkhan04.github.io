@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hafeez Ullah — Civil Engineer Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blueprint:      #17324f;
+    --blueprint-dark: #0e2338;
+    --blueprint-deep: #0a1a2b;
+    --line:           #e8eef6;
+    --line-dim:       #9db3ca;
+    --line-faint:     #395776;
+    --hazard:         #f2a53a;
+    --hazard-dim:     #b57a2c;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    background:var(--blueprint);
+    color:var(--line);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.6;
+    position:relative;
+    overflow-x:hidden;
+  }
+
+  /* faint blueprint grid */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background-image:
+      linear-gradient(var(--line-faint) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-faint) 1px, transparent 1px);
+    background-size:44px 44px;
+    opacity:0.08;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  /* corner registration marks */
+  .reg-mark{
+    position:fixed;
+    width:22px; height:22px;
+    z-index:5;
+    opacity:0.55;
+    pointer-events:none;
+  }
+  .reg-mark::before, .reg-mark::after{
+    content:"";
+    position:absolute;
+    background:var(--line-dim);
+  }
+  .reg-mark::before{ width:100%; height:1px; top:50%; }
+  .reg-mark::after{ width:1px; height:100%; left:50%; }
+  .reg-tl{ top:14px; left:14px; }
+  .reg-tr{ top:14px; right:14px; }
+  .reg-bl{ bottom:14px; left:14px; }
+  .reg-br{ bottom:14px; right:14px; }
+
+  .wrap{
+    position:relative;
+    z-index:1;
+    max-width:920px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  /* ---------- TITLE BLOCK / HEADER ---------- */
+  header.titleblock{
+    border-bottom:2px solid var(--line);
+    padding:56px 0 0 0;
+  }
+
+  .tb-eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.18em;
+    color:var(--hazard);
+    text-transform:uppercase;
+    margin-bottom:14px;
+  }
+
+  h1.tb-name{
+    font-family:'Oswald', sans-serif;
+    font-weight:700;
+    font-size:clamp(40px, 7vw, 68px);
+    letter-spacing:0.02em;
+    text-transform:uppercase;
+    line-height:1.02;
+  }
+
+  .tb-role{
+    font-family:'Oswald', sans-serif;
+    font-size:clamp(16px, 2.4vw, 20px);
+    font-weight:500;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--line-dim);
+    margin-top:10px;
+  }
+
+  /* title block metadata strip, like a drawing stamp */
+  .tb-stamp{
+    margin-top:34px;
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    border-top:1px solid var(--line-faint);
+  }
+  .tb-cell{
+    padding:12px 16px;
+    border-right:1px solid var(--line-faint);
+  }
+  .tb-cell:last-child{ border-right:none; }
+  .tb-cell .k{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--line-dim);
+    margin-bottom:4px;
+  }
+  .tb-cell .v{
+    font-size:13px;
+    color:var(--line);
+  }
+  .tb-cell .v a{ color:var(--line); }
+
+  @media (max-width:640px){
+    .tb-stamp{ grid-template-columns:repeat(2, 1fr); }
+    .tb-cell:nth-child(2){ border-right:none; }
+  }
+
+  /* ---------- SCALE RULER DIVIDER (signature element) ---------- */
+  .ruler{
+    position:relative;
+    height:34px;
+    margin:70px 0 40px 0;
+  }
+  .ruler-line{
+    position:absolute;
+    top:50%;
+    left:0; right:0;
+    height:1px;
+    background:var(--line-faint);
+  }
+  .ruler-ticks{
+    position:absolute;
+    inset:0;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .ruler-ticks span{
+    width:1px;
+    background:var(--line-dim);
+    height:10px;
+  }
+  .ruler-ticks span:nth-child(5n+1){ height:16px; }
+  .ruler-label{
+    position:absolute;
+    right:0;
+    top:-16px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.1em;
+    color:var(--hazard);
+    background:var(--blueprint);
+    padding-left:8px;
+  }
+
+  /* ---------- SECTION HEADINGS ---------- */
+  .sheet-no{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--hazard);
+    letter-spacing:0.12em;
+    margin-bottom:8px;
+  }
+  h2.section-title{
+    font-family:'Oswald', sans-serif;
+    font-weight:600;
+    font-size:clamp(24px,4vw,32px);
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+    margin-bottom:22px;
+  }
+
+  section{ padding-bottom:10px; }
+
+  p.lead{
+    max-width:70ch;
+    color:var(--line);
+    font-size:15.5px;
+  }
+
+  /* ---------- EXPERIENCE ---------- */
+  .entry{
+    display:grid;
+    grid-template-columns:150px 1fr;
+    gap:22px;
+    padding:18px 0;
+    border-top:1px solid var(--line-faint);
+  }
+  .entry:last-child{ border-bottom:1px solid var(--line-faint); }
+  .entry .when{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--line-dim);
+    padding-top:2px;
+  }
+  .entry h3{
+    font-family:'Oswald', sans-serif;
+    font-size:18px;
+    font-weight:500;
+    text-transform:uppercase;
+    letter-spacing:0.02em;
+    margin-bottom:8px;
+  }
+  .entry ul{ list-style:none; }
+  .entry li{
+    position:relative;
+    padding-left:16px;
+    font-size:14.5px;
+    color:var(--line);
+    margin-bottom:6px;
+  }
+  .entry li::before{
+    content:"—";
+    position:absolute;
+    left:0;
+    color:var(--hazard-dim);
+  }
+
+  @media (max-width:640px){
+    .entry{ grid-template-columns:1fr; gap:6px; }
+  }
+
+  /* ---------- FEATURED PROJECT ---------- */
+  .feature-intro{ margin-bottom:26px; }
+  .feature-intro h3{
+    font-family:'Oswald', sans-serif;
+    font-size:22px;
+    font-weight:600;
+    text-transform:uppercase;
+    margin-bottom:6px;
+  }
+  .feature-intro .sub{
+    color:var(--line-dim);
+    font-style:italic;
+    font-size:14.5px;
+  }
+
+  .fig-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+    margin-top:26px;
+  }
+  @media (max-width:640px){ .fig-grid{ grid-template-columns:1fr; } }
+
+  figure.fig{
+    border:1px solid var(--line-faint);
+    padding:10px;
+    background:rgba(255,255,255,0.02);
+  }
+  .fig-frame{
+    aspect-ratio:4/3;
+    width:100%;
+    border:1px dashed var(--line-faint);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:16px;
+    background:var(--blueprint-dark);
+  }
+  .fig-frame img{
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .fig-placeholder{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--line-dim);
+    line-height:1.7;
+  }
+  .fig-placeholder .path{
+    color:var(--hazard);
+    display:block;
+    margin-top:6px;
+    word-break:break-all;
+  }
+  figcaption{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--line-dim);
+    margin-top:10px;
+  }
+  figcaption b{ color:var(--line); font-weight:500; }
+
+  /* ---------- ACADEMIC PROJECTS GRID ---------- */
+  .card-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+  }
+  @media (max-width:640px){ .card-grid{ grid-template-columns:1fr; } }
+
+  .card{
+    border:1px solid var(--line-faint);
+    padding:0 0 16px 0;
+    transition:border-color 0.2s ease, transform 0.2s ease;
+    overflow:hidden;
+  }
+  .card:hover{
+    border-color:var(--hazard-dim);
+    transform:translateY(-2px);
+  }
+  .card-thumb{
+    aspect-ratio:16/9;
+    width:100%;
+    border-bottom:1px dashed var(--line-faint);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:10px;
+    background:var(--blueprint-dark);
+  }
+  .card-thumb img{
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .card-thumb .thumb-placeholder{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    line-height:1.6;
+    color:var(--line-dim);
+  }
+  .card-thumb .thumb-placeholder .path{
+    color:var(--hazard);
+    display:block;
+    margin-top:4px;
+    word-break:break-all;
+  }
+  .card-body{ padding:14px 18px 0 18px; }
+  .card h4{
+    font-family:'Oswald', sans-serif;
+    font-size:15px;
+    font-weight:500;
+    text-transform:uppercase;
+    letter-spacing:0.01em;
+    margin-bottom:8px;
+  }
+  .tags{ display:flex; flex-wrap:wrap; gap:6px; }
+  .tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    letter-spacing:0.04em;
+    color:var(--blueprint-deep);
+    background:var(--line-dim);
+    padding:3px 7px;
+  }
+
+  /* ---------- SKILLS ---------- */
+  .skill-row{
+    display:grid;
+    grid-template-columns:140px 1fr;
+    gap:16px;
+    padding:10px 0;
+    border-top:1px solid var(--line-faint);
+    align-items:baseline;
+  }
+  .skill-row:last-child{ border-bottom:1px solid var(--line-faint); }
+  .skill-row .k{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--hazard);
+  }
+  .skill-row .v{ font-size:14px; }
+  @media (max-width:640px){ .skill-row{ grid-template-columns:1fr; gap:4px; } }
+
+  /* ---------- CONTACT / FOOTER ---------- */
+  footer{
+    margin-top:60px;
+    padding:40px 0 70px 0;
+    border-top:2px solid var(--line);
+  }
+  .contact-grid{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+    margin-top:20px;
+  }
+  .btn{
+    display:inline-block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    text-decoration:none;
+    color:var(--line);
+    border:1px solid var(--line-dim);
+    padding:11px 18px;
+    transition:background 0.2s ease, color 0.2s ease;
+  }
+  .btn:hover{ background:var(--line); color:var(--blueprint-deep); }
+  .btn.primary{
+    background:var(--hazard);
+    border-color:var(--hazard);
+    color:var(--blueprint-deep);
+    font-weight:500;
+  }
+  .btn.primary:hover{ background:var(--hazard-dim); border-color:var(--hazard-dim); color:var(--line); }
+
+  footer .fine{
+    margin-top:36px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--line-faint);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="reg-mark reg-tl"></div>
+<div class="reg-mark reg-tr"></div>
+<div class="reg-mark reg-bl"></div>
+<div class="reg-mark reg-br"></div>
+
+<div class="wrap">
+
+  <!-- ============ HEADER / TITLE BLOCK ============ -->
+  <header class="titleblock">
+    <div class="tb-eyebrow">Portfolio — Rev. 01</div>
+    <h1 class="tb-name">Hafeez Ullah</h1>
+    <div class="tb-role">Civil Engineer — Structural / Geotechnical / Water Resources</div>
+
+    <div class="tb-stamp">
+      <div class="tb-cell">
+        <div class="k">Based in</div>
+        <div class="v">Nowshera, Pakistan</div>
+      </div>
+      <div class="tb-cell">
+        <div class="k">Email</div>
+        <div class="v"><a href="mailto:Hafeezkhan41736@gmail.com">Hafeezkhan41736@gmail.com</a></div>
+      </div>
+      <div class="tb-cell">
+        <div class="k">Phone</div>
+        <div class="v">+92 (336) 8006999</div>
+      </div>
+      <div class="tb-cell">
+        <div class="k">LinkedIn</div>
+        <div class="v"><a href="https://www.linkedin.com/in/hafeez-ullah-07489a284" target="_blank" rel="noopener">/in/hafeez-ullah</a></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about">
+    <div class="ruler"><div class="ruler-line"></div><div class="ruler-ticks">
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div><div class="ruler-label">SHEET 01 / ABOUT</div></div>
+
+    <p class="lead">
+      Civil engineering graduate from GIKI, combining hands-on construction supervision experience at NESPAK
+      with computational modeling across structural, geotechnical, and water resources domains. My final-year
+      project integrates computer vision, machine learning, and finite element analysis into a single pipeline
+      for predictive structural health assessment — I like problems that sit at the edge of civil engineering
+      and computation.
+    </p>
+  </section>
+
+  <!-- ============ EXPERIENCE ============ -->
+  <section id="experience">
+    <div class="ruler"><div class="ruler-line"></div><div class="ruler-ticks">
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div><div class="ruler-label">SHEET 02 / EXPERIENCE</div></div>
+
+    <div class="entry">
+      <div class="when">Summer 2025</div>
+      <div>
+        <h3>Intern — National Engineering Services Pakistan (NESPAK)</h3>
+        <ul>
+          <li>Reviewed PC-1 documents, structural drawings, bidding documents, and geotechnical reports to support project planning and technical evaluation</li>
+          <li>Monitored on-site construction activities, including excavation, reinforcement placement, and concreting</li>
+          <li>Supported project management and construction supervision teams in tracking progress against technical and contractual requirements</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURED PROJECT ============ -->
+  <section id="featured-project">
+    <div class="ruler"><div class="ruler-line"></div><div class="ruler-ticks">
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div><div class="ruler-label">SHEET 03 / FEATURED PROJECT</div></div>
+
+    <div class="feature-intro">
+      <h3>Corrosion Information Modeling (CIM) Framework</h3>
+      <div class="sub">An integrated system for predictive structural health assessment of steel bridges</div>
+      <p class="lead" style="margin-top:14px;">
+        The pipeline combines computer-vision-based corrosion detection, machine-learning-based deterioration
+        forecasting, finite element structural analysis, and 3D parametric visualization — taking a bridge from
+        raw inspection photos to a forward-looking structural health estimate.
+      </p>
+    </div>
+
+    <!--
+      HOW TO ADD YOUR IMAGES:
+      1. In your GitHub repo, create a folder named "images" (if it isn't there already).
+      2. Upload your project pictures into it, using the exact filenames below
+         (fig-01-corrosion-detection.jpg, fig-02-ml-forecast.jpg, etc.)
+      3. That's it — once uploaded, these placeholder boxes will automatically
+         be replaced by your real images. No code editing needed.
+    -->
+    <div class="fig-grid">
+      <figure class="fig">
+        <div class="fig-frame">
+          <img src="images/fig-01-corrosion-detection.jpg" alt="Corrosion detection output"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div class="fig-placeholder" style="display:none;">
+            ADD IMAGE<span class="path">images/fig-01-corrosion-detection.jpg</span>
+          </div>
+        </div>
+        <figcaption><b>Fig. 01</b> — Computer-vision corrosion detection on steel bridge surface</figcaption>
+      </figure>
+
+      <figure class="fig">
+        <div class="fig-frame">
+          <img src="images/fig-02-ml-forecast.jpg" alt="ML deterioration forecast"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div class="fig-placeholder" style="display:none;">
+            ADD IMAGE<span class="path">images/fig-02-ml-forecast.jpg</span>
+          </div>
+        </div>
+        <figcaption><b>Fig. 02</b> — Machine-learning deterioration forecast over time</figcaption>
+      </figure>
+
+      <figure class="fig">
+        <div class="fig-frame">
+          <img src="images/fig-03-fem-analysis.jpg" alt="Finite element structural analysis"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div class="fig-placeholder" style="display:none;">
+            ADD IMAGE<span class="path">images/fig-03-fem-analysis.jpg</span>
+          </div>
+        </div>
+        <figcaption><b>Fig. 03</b> — Finite element structural analysis of corroded section</figcaption>
+      </figure>
+
+      <figure class="fig">
+        <div class="fig-frame">
+          <img src="images/fig-04-3d-visualization.jpg" alt="3D parametric visualization"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div class="fig-placeholder" style="display:none;">
+            ADD IMAGE<span class="path">images/fig-04-3d-visualization.jpg</span>
+          </div>
+        </div>
+        <figcaption><b>Fig. 04</b> — 3D parametric visualization of the full pipeline output</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============ ACADEMIC PROJECTS ============ -->
+  <section id="projects">
+    <div class="ruler"><div class="ruler-line"></div><div class="ruler-ticks">
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div><div class="ruler-label">SHEET 04 / ACADEMIC PROJECTS</div></div>
+
+    <!--
+      HOW TO ADD A THUMBNAIL TO ANY PROJECT CARD:
+      Upload an image into your "images" folder using the exact filename
+      shown in each card below (e.g. images/proj-01-roadway.jpg) and it will
+      automatically replace the "ADD IMAGE" placeholder. No code editing needed.
+    -->
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-thumb">
+          <img src="images/proj-01-roadway.jpg" alt="Geometric design of a roadway"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div class="thumb-placeholder" style="display:none;">ADD IMAGE<span class="path">images/proj-01-roadway.jpg</span></div>
+        </div>
+        <div class="card-body">
+          <h4>Geometric Design of a Roadway</h4>
+          <div class="tags"><span class="tag">AutoCAD</span><span class="tag">Highway Design</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-thumb">
+          <img src="images/proj-02-primavera.jpg" alt="Construction planning and project controls"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div class="thumb-placeholder" style="display:none;">ADD IMAGE<span class="path">images/proj-02-primavera.jpg</span></div>
+        </div>
+        <div class="card-body">
+          <h4>Construction Planning &amp; Project Controls</h4>
+          <div class="tags"><span class="tag">Primavera P6</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-thumb">
+          <img src="images/proj-03-plaza.jpg" alt="Multi-story plaza architectural and structural design"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div class="thumb-placeholder" style="display:none;">ADD IMAGE<span class="path">images/proj-03-plaza.jpg</span></div>
+        </div>
+        <div class="card-body">
+          <h4>Multi-Story Plaza — Architectural &amp; Structural Design</h4>
+          <div class="tags"><span class="tag">ETABS</span><span class="tag">SAP2000</span><span class="tag">Revit</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-thumb">
+          <img src="images/proj-04-dam-seepage.jpg" alt="Seepage analysis of an earth-fill dam"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div class="thumb-placeholder" style="display:none;">ADD IMAGE<span class="path">images/proj-04-dam-seepage.jpg</span></div>
+        </div>
+        <div class="card-body">
+          <h4>Seepage Analysis of an Earth-Fill Dam</h4>
+          <div class="tags"><span class="tag">GeoStudio</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-thumb">
+          <img src="images/proj-05-irrigation.jpg" alt="Pressurized irrigation system design"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div class="thumb-placeholder" style="display:none;">ADD IMAGE<span class="path">images/proj-05-irrigation.jpg</span></div>
+        </div>
+        <div class="card-body">
+          <h4>Pressurized Irrigation System Design</h4>
+          <div class="tags"><span class="tag">Water Conservation</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-thumb">
+          <img src="images/proj-06-epanet.jpg" alt="Campus water-supply network simulation"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div class="thumb-placeholder" style="display:none;">ADD IMAGE<span class="path">images/proj-06-epanet.jpg</span></div>
+        </div>
+        <div class="card-body">
+          <h4>Campus Water-Supply Network Simulation</h4>
+          <div class="tags"><span class="tag">EPANET</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-thumb">
+          <img src="images/proj-07-college-render.jpg" alt="Multi-story college modeling and rendering"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div class="thumb-placeholder" style="display:none;">ADD IMAGE<span class="path">images/proj-07-college-render.jpg</span></div>
+        </div>
+        <div class="card-body">
+          <h4>Multi-Story College — Modeling &amp; Rendering</h4>
+          <div class="tags"><span class="tag">Revit</span><span class="tag">Enscape</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-thumb">
+          <img src="images/proj-08-pile-foundation.jpg" alt="Pile foundation design and verification"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div class="thumb-placeholder" style="display:none;">ADD IMAGE<span class="path">images/proj-08-pile-foundation.jpg</span></div>
+        </div>
+        <div class="card-body">
+          <h4>Pile Foundation Design &amp; Verification</h4>
+          <div class="tags"><span class="tag">PLAXIS 2D</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-thumb">
+          <img src="images/proj-09-girder-fem.jpg" alt="FEM-based bridge girder analysis"
+               onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div class="thumb-placeholder" style="display:none;">ADD IMAGE<span class="path">images/proj-09-girder-fem.jpg</span></div>
+        </div>
+        <div class="card-body">
+          <h4>FEM-Based Bridge Girder Analysis</h4>
+          <div class="tags"><span class="tag">Abaqus</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SKILLS ============ -->
+  <section id="skills">
+    <div class="ruler"><div class="ruler-line"></div><div class="ruler-ticks">
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div><div class="ruler-label">SHEET 05 / SKILLS</div></div>
+
+    <div class="skill-row">
+      <div class="k">Software</div>
+      <div class="v">ETABS, SAP2000, Revit, AutoCAD, ArcGIS, EPANET, PLAXIS 2D, Abaqus, GeoStudio, Primavera P6</div>
+    </div>
+    <div class="skill-row">
+      <div class="k">Engineering</div>
+      <div class="v">Finite Element Modeling, Reinforced Concrete Design</div>
+    </div>
+    <div class="skill-row">
+      <div class="k">Other</div>
+      <div class="v">MS Office, Technical Presentation &amp; Communication</div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT / FOOTER ============ -->
+  <footer id="contact">
+    <div class="sheet-no">Sheet 06 / Contact</div>
+    <h2 class="section-title">Let's work together</h2>
+    <p class="lead">Open to graduate and entry-level roles in structural, geotechnical, or water resources engineering.</p>
+
+    <div class="contact-grid">
+      <a class="btn primary" href="mailto:Hafeezkhan41736@gmail.com">Email me</a>
+      <a class="btn" href="https://www.linkedin.com/in/hafeez-ullah-07489a284" target="_blank" rel="noopener">LinkedIn</a>
+      <!-- Replace # below with the raw link to your CV file once it's uploaded to this repo -->
+      <a class="btn" href="#">Download CV</a>
+    </div>
+
+    <div class="fine">Drawing Status: Issued for Review · Sheet 06 of 06</div>
+  </footer>
+
+</div>
+</body>
+</html>
